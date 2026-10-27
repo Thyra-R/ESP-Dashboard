@@ -1,4 +1,5 @@
 import clientPromise from '../../../lib/mongodb';
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
   const secret = request.headers.get('x-device-secret');
@@ -18,7 +19,10 @@ export async function POST(request) {
   return Response.json({ success: true });
 }
 
-export async function GET() {
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const limit = Math.min(parseInt(searchParams.get('limit')) || 50, 1000);
+
   const client = await clientPromise;
   const db = client.db('sensordata');
 
@@ -26,7 +30,7 @@ export async function GET() {
     .collection('readings')
     .find({})
     .sort({ receivedAt: -1 })
-    .limit(50)
+    .limit(limit)
     .toArray();
 
   return Response.json(readings);
