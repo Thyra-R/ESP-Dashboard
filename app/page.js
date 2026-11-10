@@ -60,7 +60,7 @@ export default function Home() {
 
   return (
     <main style={{ maxWidth: 1000, margin: '0 auto', padding: 16, fontFamily: 'var(--font-body)' }}>
-      <h1 style={{ fontFamily: 'var(--font-heading)' }}>Sensor Dashboard</h1>
+      <h1 style={{ fontFamily: 'var(--font-heading)' }}>Sinton Power Line Monitor</h1>
 
       {error && <p style={{ color: 'crimson' }}>Could not load data: {error}</p>}
       {latest && (

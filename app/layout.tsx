@@ -1,26 +1,30 @@
 import type { Metadata } from "next";
-import { Lora, IBM_Plex_Mono, Source_Serif_4 } from "next/font/google";
+import { Work_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const heading = Lora({ subsets: ["latin"], variable: "--font-heading" });
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  variable: "--font-work-sans",
+});
+
 const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "600"],
   variable: "--font-mono",
 });
-const body = Source_Serif_4({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata: Metadata = {
   title: "Sensor Dashboard",
   description: "Live and historical readings from the ESP32 device",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="en"
-      className={`${heading.variable} ${mono.variable} ${body.variable}`}
-    >
+    <html lang="en" className={`${workSans.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );
