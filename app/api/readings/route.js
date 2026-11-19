@@ -61,6 +61,23 @@ export async function GET(request) {
     return Response.json(rows); // oldest first
   }
 
+  const sinceParam = searchParams.get('since');
+  const hours = parseFloat(searchParams.get('hours'));
+  if (sinceParam || hours) {
+    const from = sinceParam
+      ? new Date(sinceParam)
+      : new Date(Date.now() - Math.min(hours, 24) * 3600e3);
+    if (isNaN(from.getTime())) {
+      return Response.json({ error: 'Bad since value' }, { status: 400 });
+    }
+    const recent = await col
+      .find({ receivedAt: { $gt: from } })
+      .sort({ receivedAt: 1 })
+      .limit(5000)
+      .toArray();
+    return Response.json(recent); // oldest first
+  }
+
   const limit = Math.min(parseInt(searchParams.get('limit')) || 50, 1000);
   const rows = await col.find({}).sort({ receivedAt: -1 }).limit(limit).toArray();
   return Response.json(rows.reverse());
